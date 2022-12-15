@@ -9,7 +9,9 @@ function PokeList(props) {
     useEffect(() => {
         pokedata.map((pokemon) => {
             axios.get(pokemon.url).then((res) => {
-                setPokemonData(current => [...current, res.data]);
+                if (!pokemonData.find(pokemon => pokemon.id === res.data.id)) {
+                    setPokemonData(current => [...current, res.data]);
+                } 
             })
         })
     }, [pokedata]);
@@ -17,7 +19,7 @@ function PokeList(props) {
     return (
         <>
             {pokemonData.sort((a, b) => {
-                return a.id - b.id
+                return a.id - b.id //sort by dex number
             }).map((pokemon) => {
                 return (
                     <div key={pokemon.id} className="pokemon-list">
