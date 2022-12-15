@@ -12,11 +12,13 @@ function PokeList(props) {
                 setPokemonData(current => [...current, res.data]);
             })
         })
-    }, []);
+    }, [pokedata]);
 
     return (
         <>
-            {pokemonData.map((pokemon) => {
+            {pokemonData.sort((a, b) => {
+                return a.id - b.id
+            }).map((pokemon) => {
                 return (
                     <div key={pokemon.id} className="pokemon-list">
                         <p>{pokemon.id}.</p>

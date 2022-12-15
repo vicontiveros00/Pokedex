@@ -9,7 +9,6 @@ function App() {
   useEffect(() => {
     axios.get('https://pokeapi.co/api/v2/pokemon').then((res) => {
       setPokedata(res.data.results);
-      console.log(pokedata);
     })
   }, []);
 
@@ -20,4 +19,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
