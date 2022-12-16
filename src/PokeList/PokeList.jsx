@@ -7,13 +7,14 @@ function PokeList(props) {
     const [ pokemonData, setPokemonData ] = useState([]);
 
     useEffect(() => {
-        pokedata.map((pokemon) => {
-            axios.get(pokemon.url).then((res) => {
-                if (!pokemonData.find(pokemon => pokemon.id === res.data.id)) {
-                    setPokemonData(current => [...current, res.data]);
-                } 
+        const getAllMons = async() => {
+            const pokemonFromApiCall = pokedata.map(async (pokemon) => {
+                const res = await fetch(pokemon.url);
+                return await res.json();
             })
-        })
+            setPokemonData(await Promise.all(await pokemonFromApiCall));
+        }
+        getAllMons();
     }, [pokedata]);
 
     return (

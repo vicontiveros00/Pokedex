@@ -7,14 +7,14 @@ function App() {
   const [ pokedata, setPokedata ] = useState([]);
 
   useEffect(() => {
-    axios.get('https://pokeapi.co/api/v2/pokemon').then((res) => {
+    axios.get('https://pokeapi.co/api/v2/pokemon/?offset=40&limit=20').then((res) => {
       setPokedata(res.data.results);
     })
   }, []);
 
   return (
     <>
-      <PokeList pokedata = {pokedata} />
+      {<PokeList pokedata = {pokedata} />}
     </>
   )
 }
