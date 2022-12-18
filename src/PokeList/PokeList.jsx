@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 import './PokeList.css';
 
@@ -20,7 +19,7 @@ function PokeList(props) {
     return (
         <>
             {pokemonData.sort((a, b) => {
-                return a.id - b.id //sort by dex number
+                return a.id - b.id //ensure pokemon are sorted by dex number
             }).map((pokemon) => {
                 return (
                     <div key={pokemon.id} className="pokemon-list">
