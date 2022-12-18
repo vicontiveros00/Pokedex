@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
 import './PokeList.css';
 
 function PokeList(props) {
@@ -16,6 +17,8 @@ function PokeList(props) {
         getAllMons();
     }, [pokedata]);
 
+    //
+
     return (
         <>
             {pokemonData.sort((a, b) => {
@@ -25,7 +28,9 @@ function PokeList(props) {
                     <div key={pokemon.id} className="pokemon-list">
                         <p>{pokemon.id}.</p>
                         <img src={pokemon.sprites.front_default} />
-                        <p>{(pokemon.name).charAt(0).toUpperCase() + (pokemon.name).slice(1)}</p>
+                        <Link to={`/${pokemon.id}`}>
+                            {(pokemon.name).charAt(0).toUpperCase() + (pokemon.name).slice(1)}
+                        </Link>
                     </div>
                 )
             })}

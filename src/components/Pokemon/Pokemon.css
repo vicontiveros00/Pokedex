@@ -1,0 +1,51 @@
+.pokemon-info img {
+    width: 10rem;
+}
+
+.type {
+    width: 6rem;
+    text-align: center;
+    font-size: 0.6rem;
+    padding: 0.5rem;
+    color: #000;
+}
+
+.electric {
+    background-color: yellow;
+}
+
+.grass {
+    background-color: green;
+}
+
+.poison {
+    background-color: purple;
+}
+
+.fire {
+    background-color: red;
+}
+
+.normal {
+    background-color: grey;
+}
+
+.fighting {
+    background-color: orange;
+}
+
+.flying {
+    background-color: lightblue;
+}
+
+.ground {
+    background-color: goldenrod;
+}
+
+.rock {
+    background-color: rosybrown;
+}
+
+.bug {
+    background-color: lawngreen;
+}

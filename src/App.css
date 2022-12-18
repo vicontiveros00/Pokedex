@@ -11,6 +11,15 @@ body {
 }
 
 a {
-    font-size: 0.6rem;
     color: #fff;
+}
+
+a:hover {
+    color: #c7c7c7;
+}
+
+.link {
+    display: block;
+    margin: 2rem 0 0.3rem 0;
+    font-size: 0.6rem;
 }
