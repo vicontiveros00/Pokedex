@@ -4,8 +4,10 @@ import { Link, useParams } from "react-router-dom";
 import './Pokemon.css';
 
 function Pokemon() {
-    const { id } = useParams();
+    let { id } = useParams();
+    id = Number(id);
     const [ pokemon, setPokemon ] = useState({});
+    //const [ newPokemon, setNewPokemon ] = useState({});
     const [ isLoading, setIsLoading ] = useState(true);
     const [ hasError, setHasError ] = useState(false);
 
@@ -17,7 +19,7 @@ function Pokemon() {
             setHasError(true);
             throw new Error('Pokémon does not exist with that name or ID')
         })
-    }, [])
+    }, [isLoading])
 
     return (
         <>
@@ -45,6 +47,22 @@ function Pokemon() {
                         <p>Sp. Defense: {pokemon.stats[4].base_stat}</p>
                         <p>Speed: {pokemon.stats[5].base_stat}</p>
                     </div>
+                    <Link to={`/${id - 1}`}>
+                        <button onClick={() => {
+                            setIsLoading(true);
+                            //setNewPokemon(id - 1);
+                        }}>
+                            Previous
+                        </button>
+                    </Link>
+                    <Link to={`/${id + 1}`}>
+                        <button onClick={() => {
+                            setIsLoading(true);
+                            //setNewPokemon(Number(id) + 1);
+                        }}>
+                            Next
+                        </button>
+                    </Link>
                     <Link to='/'><p className="link">Return Home</p></Link>
                 </div> :
                 <p>Getting Pokédata....</p>
