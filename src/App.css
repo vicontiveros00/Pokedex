@@ -12,6 +12,7 @@ body {
 
 a {
     color: #fff;
+    text-decoration: none;
 }
 
 a:hover {
@@ -22,4 +23,9 @@ a:hover {
     display: block;
     margin: 2rem 0 0.3rem 0;
     font-size: 0.6rem;
+}
+
+.watermark {
+    text-decoration: underline;
+    font-size: 0.5rem;
 }

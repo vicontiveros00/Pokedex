@@ -2,6 +2,14 @@
     width: 10rem;
 }
 
+.types {
+    display: flex;
+}
+
+.types, .size, .stats {
+    margin-bottom: 1rem;
+}
+
 .type {
     width: 6rem;
     text-align: center;

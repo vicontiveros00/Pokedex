@@ -3,11 +3,10 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import './Pokemon.css';
 
-function Pokemon() {
+function Pokemon(props) {
+    const pokeCount = props.pokeCount || 905;
     let { id } = useParams();
-    id = Number(id);
     const [ pokemon, setPokemon ] = useState({});
-    //const [ newPokemon, setNewPokemon ] = useState({});
     const [ isLoading, setIsLoading ] = useState(true);
     const [ hasError, setHasError ] = useState(false);
 
@@ -47,28 +46,26 @@ function Pokemon() {
                         <p>Sp. Defense: {pokemon.stats[4].base_stat}</p>
                         <p>Speed: {pokemon.stats[5].base_stat}</p>
                     </div>
-                    <Link to={`/${id - 1}`}>
+                    {pokemon.id > 1 && <Link to={`/${pokemon.id - 1}`}>
                         <button onClick={() => {
                             setIsLoading(true);
-                            //setNewPokemon(id - 1);
                         }}>
                             Previous
                         </button>
-                    </Link>
-                    <Link to={`/${id + 1}`}>
+                    </Link>}
+                    {pokemon.id < pokeCount && <Link to={`/${pokemon.id + 1}`}>
                         <button onClick={() => {
                             setIsLoading(true);
-                            //setNewPokemon(Number(id) + 1);
                         }}>
                             Next
                         </button>
-                    </Link>
-                    <Link to='/'><p className="link">Return Home</p></Link>
+                    </Link>}
+                    <p className="link"><Link to='/'>Return Home</Link></p>
                 </div> :
                 <p>Getting Pokédata....</p>
              : <>
                 <p>404 No Pokédata found!</p>
-                <Link to='/'><p className="link">Return Home</p></Link>
+                <p className="link"><Link to='/'>Return Home</Link></p>
                </>}
         </>
     )

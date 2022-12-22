@@ -2,11 +2,13 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import PokeList from '../PokeList/PokeList';
 import Pagination from '../Pagination/Pagination';
+import SearchBar from '../SearchBar/SearchBar';
 
-function Home() {
+function Home(props) {
+  const baseUrl = 'https://pokeapi.co/api/v2/pokemon/';
+  const { pokeCount } = props;
   const [ pokedata, setPokedata ] = useState([]);
-  const [ pokecount, setPokecount ] = useState(0);
-  const [ currentPage, setCurrentPage ] = useState('https://pokeapi.co/api/v2/pokemon/');
+  const [ currentPage, setCurrentPage ] = useState(baseUrl);
   const [ nextPage, setNextPage ] = useState();
   const [ previousPage, setPreviousPage ] = useState();
   const [ isLoading, setIsLoading ] = useState(true);
@@ -20,7 +22,6 @@ function Home() {
       })
     }).then((res) => {
       setIsLoading(false);
-      setPokecount(res.data.count);
       setNextPage(res.data.next);
       setPreviousPage(res.data.previous);
       setPokedata(res.data.results);
@@ -44,14 +45,13 @@ function Home() {
         'Getting Pokédata...' 
         :
         <>
-          <p>Showing 20 of {pokecount} Pokémon</p>
-          {/*put a searchbar here*/}
+          <p>Showing 20 of {pokeCount} Pokémon</p>
+          <SearchBar />
           <PokeList pokedata = {pokedata} />
           <Pagination 
             goToNextPage = {nextPage ? goToNextPage : null}
             goToPreviousPage = {previousPage ? goToPreviousPage : null}
           />
-          <a className='link' href="https://github.com/vicontiveros00">github/vicontiveros00</a>
         </>}
     </>
   )
