@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import './Pokemon.css';
+import WeaknessCalculator from "../WeaknessCalculator/WeaknessCalculator";
 
 function Pokemon(props) {
     const pokeCount = props.pokeCount || 905;
@@ -46,6 +47,7 @@ function Pokemon(props) {
                         <p>Sp. Defense: {pokemon.stats[4].base_stat}</p>
                         <p>Speed: {pokemon.stats[5].base_stat}</p>
                     </div>
+                    <WeaknessCalculator types={pokemon.types}/>
                     {pokemon.id > 1 && <Link to={`/${pokemon.id - 1}`}>
                         <button onClick={() => {
                             setIsLoading(true);
