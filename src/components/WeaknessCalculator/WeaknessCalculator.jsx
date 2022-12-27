@@ -13,21 +13,46 @@ function WeaknessCalculator(props) {
     const [ isGettingMoreData, setIsGettingMoreData ] = useState(true);
     //arrays for type weakness data
 
-    const compareWeaknessArrays = (firstTypes, secondTypes) => {
-        let newWeaknessArr = [];
-        for (let i = 0; i < firstTypes.length; i++) {
-            for (let j = 0; j < secondTypes.length; j++) {
-                if (firstTypes[i].name === secondTypes[j].name) {
-                    newWeaknessArr.push(`4x ${firstTypes[i].name}`)
-                }
-                    newWeaknessArr.push(`2x ${firstTypes[i].name}`)
-                    newWeaknessArr.push(`2x ${secondTypes[j].name}`) 
-            }
+    const arrayOfObjectToArray = (arr) => {
+        let newArr = [];
+        for (let i = 0; i < arr.length; i++) {
+            newArr.push(arr[i].name);
         }
-        setComparedWeakness(newWeaknessArr.filter((type, index) => {
-            return newWeaknessArr.indexOf(type) === index;
-        }));
-    } //ignore this stupid mess ill figure something else out this works for now
+        return newArr;
+    }
+
+    const compareWeaknessArrays = (firstTypes, secondTypes) => {
+        try {
+            let weaknesses = [];
+            let primary = arrayOfObjectToArray(firstTypes);
+            let secondary = arrayOfObjectToArray(secondTypes);
+            
+            for (let i = 0; i < primary.length; i++) {
+                for (let j = 0; j < secondary.length; j++) {
+                    if (primary[i] === secondary[j]) {
+                        weaknesses.push(`4x ${primary[i].toUpperCase()}`);
+                        primary.splice(i, 1);
+                        secondary.splice(j, 1);
+                    }
+                }
+            }
+
+            primary = primary.map((type) => {
+                return `2x ${type.toUpperCase()}`
+            })
+
+            secondary = secondary.map((type) => {
+                return `2x ${type.toUpperCase()}`
+            })
+
+            weaknesses = weaknesses.concat(primary, secondary);
+
+            setComparedWeakness(weaknesses);
+        } catch {
+            setComparedWeakness(['Error calculating weaknesses!']);
+            throw new Error("If you're seeing this message you found a bug for me, please contact me at https://vicontiveros00.github.io/#contact and let me know which Pokémon this happened with");
+        }
+    } 
 
     useEffect(() => {
         axios.get(firstTypeUrl).then((res) => {
@@ -42,21 +67,26 @@ function WeaknessCalculator(props) {
     }, [isGettingMoreData]);
 
     return (
-        <div className="weakness">
-            <p>Weakness:</p>
+        <>
             {secondTypeUrl ?
-                comparedWeakness.sort().reverse().map((type) => {
-                    return (
-                        <p key={type}>{type}</p>
-                    )
-                }) :
-                firstTypeWeakness.map((type) => {
-                    return (
-                        <p key={type.name}>{type.name}</p>
-                    )
-                })
+                <div className="weakness">
+                    <p>Weakness:</p>
+                    {comparedWeakness.map((type) => {
+                        return (
+                            <p className={`type ${type.toLowerCase()}`} key={type}>{type}</p>
+                        )
+                    })}
+                </div> :
+                <div className="weakness">
+                    <p>Weakness:</p>
+                    {firstTypeWeakness.map((type) => {
+                        return (
+                            <p className={`type ${type.name}`} key={type.name}>{`2x ${type.name.toUpperCase()}`}</p>
+                        )
+                    })}
+                </div>
             }
-        </div>
+        </>
     )
 }
 
