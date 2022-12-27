@@ -28,7 +28,7 @@ function PokeList(props) {
                     <div key={pokemon.id} className="pokemon-list">
                         <p>{pokemon.id}.</p>
                         <img src={pokemon.sprites.front_default} />
-                        <Link to={`/${pokemon.id}`}>
+                        <Link to={`/pokemon/${pokemon.id}`}>
                             {(pokemon.name).charAt(0).toUpperCase() + (pokemon.name).slice(1)}
                         </Link>
                     </div>

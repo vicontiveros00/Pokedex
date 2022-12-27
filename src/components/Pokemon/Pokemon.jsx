@@ -5,7 +5,7 @@ import './Pokemon.css';
 import WeaknessCalculator from "../WeaknessCalculator/WeaknessCalculator";
 
 function Pokemon(props) {
-    const pokeCount = props.pokeCount || 905;
+    const pokeCount = props.pokeCount || 905; //total pokemon at the time of coding this
     let { id } = useParams();
     const [ pokemon, setPokemon ] = useState({});
     const [ isLoading, setIsLoading ] = useState(true);
@@ -48,20 +48,21 @@ function Pokemon(props) {
                         <p>Speed: {pokemon.stats[5].base_stat}</p>
                     </div>
                     <WeaknessCalculator types={pokemon.types}/>
-                    {pokemon.id > 1 && <Link to={`/${pokemon.id - 1}`}>
+                    {pokemon.id > 1 && <Link to={`/pokemon/${pokemon.id - 1}`}>
                         <button onClick={() => {
                             setIsLoading(true);
                         }}>
                             Previous
                         </button>
                     </Link>}
-                    {pokemon.id < pokeCount && <Link to={`/${pokemon.id + 1}`}>
+                    {pokemon.id < pokeCount && <Link to={`/pokemon/${pokemon.id + 1}`}>
                         <button onClick={() => {
                             setIsLoading(true);
                         }}>
                             Next
                         </button>
                     </Link>}
+                    {/*I couldve used the pagination component here but the logic is too different, for now Pokemon.jsx has its own pagination*/}
                     <p className="link"><Link to='/'>Return Home</Link></p>
                 </div> :
                 <p>Getting Pokédata....</p>

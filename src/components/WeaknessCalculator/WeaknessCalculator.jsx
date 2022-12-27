@@ -7,8 +7,8 @@ function WeaknessCalculator(props) {
     const secondTypeUrl = props.types[1]?.type.url;
     //get url from props for primary type and secondary type if it exists from pokemon.jsx
 
-    const [ firstTypeWeakness, setFirstTypeWeakness ] = useState([]);
-    const [ secondTypeWeakness, setSecondTypeWeakness ] = useState([]);
+    const [ firstTypeWeakness, setFirstTypeWeakness ] = useState({});
+    const [ secondTypeWeakness, setSecondTypeWeakness ] = useState({});
     const [ comparedWeakness, setComparedWeakness ] = useState([]);
     const [ isGettingMoreData, setIsGettingMoreData ] = useState(true);
     //arrays for type weakness data
@@ -22,10 +22,14 @@ function WeaknessCalculator(props) {
     }
 
     const compareWeaknessArrays = (firstTypes, secondTypes) => {
-        try {
+        if (Object.keys(firstTypes).length !== 0 && Object.keys(secondTypes).length !== 0) {
             let weaknesses = [];
-            let primary = arrayOfObjectToArray(firstTypes);
-            let secondary = arrayOfObjectToArray(secondTypes);
+            let primary = arrayOfObjectToArray(firstTypes.double_damage_from);
+            let secondary = arrayOfObjectToArray(secondTypes.double_damage_from);
+            let halfDamageToPrimary = arrayOfObjectToArray(firstTypes.half_damage_from);
+            let halfDamageToSecodary = arrayOfObjectToArray(secondTypes.half_damage_from);
+            let noEffectToPrimary = arrayOfObjectToArray(firstTypes.no_damage_from);
+            let noEffectToSecondary = arrayOfObjectToArray(secondTypes.no_damage_from);
             
             for (let i = 0; i < primary.length; i++) {
                 for (let j = 0; j < secondary.length; j++) {
@@ -37,28 +41,32 @@ function WeaknessCalculator(props) {
                 }
             }
 
-            primary = primary.map((type) => {
+            let leftOverWeaknesses = primary.concat(secondary);
+            const weaknessesCancelOut = halfDamageToPrimary.concat(halfDamageToSecodary,noEffectToPrimary,noEffectToSecondary);
+
+            leftOverWeaknesses = leftOverWeaknesses.filter((type) => {
+                if (!weaknessesCancelOut.includes(type)) {
+                    return type;
+                }
+            })
+
+            leftOverWeaknesses = leftOverWeaknesses.map((type) => {
                 return `2x ${type.toUpperCase()}`
             })
 
-            secondary = secondary.map((type) => {
-                return `2x ${type.toUpperCase()}`
-            })
-
-            weaknesses = weaknesses.concat(primary, secondary);
+            weaknesses = weaknesses.concat(leftOverWeaknesses);
 
             setComparedWeakness(weaknesses);
-        } catch {
-            setComparedWeakness(['Error calculating weaknesses!']);
-            throw new Error("If you're seeing this message you found a bug for me, please contact me at https://vicontiveros00.github.io/#contact and let me know which Pokémon this happened with");
+        } else {
+            setComparedWeakness(['Loading...'])
         }
-    } 
+    }
 
     useEffect(() => {
         axios.get(firstTypeUrl).then((res) => {
-            setFirstTypeWeakness(res.data.damage_relations.double_damage_from);
+            setFirstTypeWeakness(res.data.damage_relations);
             {secondTypeUrl && axios.get(secondTypeUrl).then((res) => {
-                setSecondTypeWeakness(res.data.damage_relations.double_damage_from);
+                setSecondTypeWeakness(res.data.damage_relations);
                 compareWeaknessArrays(firstTypeWeakness, secondTypeWeakness);
                 setIsGettingMoreData(false);
             })}
@@ -67,26 +75,22 @@ function WeaknessCalculator(props) {
     }, [isGettingMoreData]);
 
     return (
-        <>
+        <div className="weakness types">
+            <p>Weakness:</p>
             {secondTypeUrl ?
-                <div className="weakness">
-                    <p>Weakness:</p>
-                    {comparedWeakness.map((type) => {
-                        return (
-                            <p className={`type ${type.toLowerCase()}`} key={type}>{type}</p>
-                        )
-                    })}
-                </div> :
-                <div className="weakness">
-                    <p>Weakness:</p>
-                    {firstTypeWeakness.map((type) => {
-                        return (
-                            <p className={`type ${type.name}`} key={type.name}>{`2x ${type.name.toUpperCase()}`}</p>
-                        )
-                    })}
-                </div>
+                comparedWeakness.map((type) => {
+                    return (
+                        <p className={`type ${type.toLowerCase()}`} key={type}>{type}</p>
+                    )
+                })
+                 :
+                firstTypeWeakness.double_damage_from?.map((type) => {
+                    return (
+                        <p className={`type ${type.name}`} key={type.name}>{`2x ${type.name.toUpperCase()}`}</p>
+                    )
+                })
             }
-        </>
+        </div>
     )
 }
 

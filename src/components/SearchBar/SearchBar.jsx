@@ -15,7 +15,7 @@ function SearchBar() {
                 }}
                 value={searchTerm}
             />
-            <Link to={`/${searchTerm}`}>
+            <Link to={`/pokemon/${searchTerm}`}>
                 <button>
                     Search
                     <img src="https://www.pngitem.com/pimgs/m/163-1634065_master-ball-sprite-png-png-download-pokeball-pixel.png" />

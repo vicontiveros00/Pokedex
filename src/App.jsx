@@ -19,7 +19,7 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={<Home pokeCount={pokeCount} />} />
-        <Route path='/:id' element ={<Pokemon pokeCount={pokeCount} />} />
+        <Route path='/pokemon/:id' element ={<Pokemon pokeCount={pokeCount} />} />
       </Routes>
       <p className='link watermark'><a href="https://github.com/vicontiveros00">github/vicontiveros00</a></p>
     </>
